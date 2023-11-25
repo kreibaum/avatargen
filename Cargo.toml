@@ -2,6 +2,11 @@
 name = "avatargen"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Generates random png avatars from seeds"
+repository = "https://github.com/kreibaum/avatargen"
+readme = "README.md"
+exclude = [".vscode/*"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
