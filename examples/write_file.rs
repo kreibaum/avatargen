@@ -4,19 +4,23 @@ use std::fs::File;
 use std::io::BufWriter;
 use std::path::Path;
 
+use avatargen::identicon;
+
 fn main() {
-    let path = Path::new(r"image.png");
+    let path = Path::new(r"output/image.png");
     let file = File::create(path).unwrap();
     let w = BufWriter::new(file);
 
-    let mut encoder = png::Encoder::new(w, 2, 1); // Width is 2 pixels and height is 1.
-    encoder.set_color(png::ColorType::Indexed);
-    encoder.set_depth(png::BitDepth::Eight);
-    let palette = [255, 0, 0, 255, 0, 0];
-    encoder.set_palette(palette.as_ref());
-    encoder.set_trns([255, 100].as_ref());
-    let mut writer = encoder.write_header().unwrap();
+    let seed_str = "204bedcd9a44b3e1db26e7619bca691c";
 
-    let data = [0, 1]; // An array containing a RGBA sequence. First pixel is red and second pixel is black.
-    writer.write_image_data(&data).unwrap(); // Save
+    identicon(seed_str, w);
+
+    for i in 0..10 {
+        let filename = format!("output/image{}.png", i);
+        let path = Path::new(&filename);
+        let file = File::create(path).unwrap();
+        let w = BufWriter::new(file);
+
+        identicon(&format!("{}{}", i, seed_str), w);
+    }
 }
